@@ -1,0 +1,14 @@
+.container {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.021);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  align-items: center;
+  .btn-avatar {
+    border-radius: 16px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    align-items: center;
+    text-align: center;
+  }
+}

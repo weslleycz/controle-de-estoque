@@ -2,12 +2,12 @@ module.exports = {
   extends: 'erb',
   rules: {
     // A temporary hack related to IDE not resolving correct package.json
-    'import/no-extraneous-dependencies': 'off',
-    'react/react-in-jsx-scope': 'off',
-    'react/jsx-filename-extension': 'off',
-    'import/extensions': 'off',
-    'import/no-unresolved': 'off',
-    'import/no-import-module-exports': 'off',
+    'import/no-extraneous-dependencies': 'on',
+    'react/react-in-jsx-scope': 'on',
+    'react/jsx-filename-extension': 'on',
+    'import/extensions': 'on',
+    'import/no-unresolved': 'on',
+    'import/no-import-module-exports': 'on',
   },
   parserOptions: {
     ecmaVersion: 2020,

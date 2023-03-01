@@ -18,7 +18,7 @@ export function Container({ children }: Props) {
 
   useEffect(() => {
     addTheme(window.electron.store.get('theme'));
-  }, [addTheme, theme]);
+  }, []);
 
   // eslint-disable-next-line prettier/prettier
   return (
