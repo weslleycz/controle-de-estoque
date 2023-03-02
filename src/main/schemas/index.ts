@@ -8,4 +8,8 @@ export const schema:
   | undefined = {
   config: {},
   theme,
+  fullscreen: {
+    type: 'boolean',
+    default: false,
+  },
 };

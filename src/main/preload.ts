@@ -24,6 +24,9 @@ const electronHandler = {
     exit() {
       ipcRenderer.send('window-exit');
     },
+    relaunch(){
+      ipcRenderer.send('window-relaunch');
+    }
   },
   store: {
     get(key: string) {

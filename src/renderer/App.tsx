@@ -8,13 +8,13 @@ import './theme/globals.scss';
 
 export default function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <StoreProvider store={store}>
-        <Container>
-          {' '}
-          <Routes />
-        </Container>
-      </StoreProvider>
-    </ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <StoreProvider store={store}>
+              <Container>
+                {' '}
+                <Routes />
+              </Container>
+          </StoreProvider>
+        </ThemeProvider>
   );
 }

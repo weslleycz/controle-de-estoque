@@ -1,8 +1,11 @@
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import LogoutIcon from '@mui/icons-material/Logout';
+import SettingsIcon from '@mui/icons-material/Settings';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import { Box, Button, List, ListItem } from '@mui/material';
 import { useStoreState } from 'easy-peasy';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { NavLink, } from 'react-router-dom';
 import { ThemeModel } from 'renderer/store/theme.store';
 import logoDark from '../../../assets/logo_dark.svg';
 import logoLight from '../../../assets/logo_light.svg';
@@ -10,6 +13,7 @@ import './style.scss';
 
 export const Menu = () => {
   const theme = useStoreState((state: ThemeModel) => state.theme) as string;
+  useHotkeys('esc', () => window.electron.ipcRenderer.exit(), []);
   return (
     <>
       <Box className="cont">
@@ -30,15 +34,17 @@ export const Menu = () => {
               ></img>
             )}
           </ListItem>
-          <ListItem component="div" disablePadding>
-            <Button
-              color={theme === 'dark' ? 'inherit' : 'primary'}
-              size="large"
-              startIcon={<ShoppingBasketIcon />}
-            >
-              <strong>Caixa (F1)</strong>
-            </Button>
-          </ListItem>
+          <NavLink to="/">
+            <ListItem component="div" disablePadding>
+              <Button
+                color={theme === 'dark' ? 'inherit' : 'primary'}
+                size="large"
+                startIcon={<ShoppingBasketIcon />}
+              >
+                <strong>Caixa (F1)</strong>
+              </Button>
+            </ListItem>
+          </NavLink>
 
           <ListItem component="div" disablePadding>
             <Button
@@ -49,7 +55,20 @@ export const Menu = () => {
               <strong>Produtos (F2)</strong>
             </Button>
           </ListItem>
-          <ListItem sx={{ marginTop: 45 }} component="div" disablePadding>
+
+          <NavLink to="/config">
+          <ListItem component="div" disablePadding>
+            <Button
+              color={theme === 'dark' ? 'inherit' : 'primary'}
+              size="large"
+              startIcon={<SettingsIcon />}
+            >
+              <strong>Configurações (F3)</strong>
+            </Button>
+          </ListItem>
+          </NavLink>
+
+          <ListItem sx={{ marginTop: 40 }} component="div" disablePadding>
             <Button
               color={theme === 'dark' ? 'inherit' : 'primary'}
               size="large"

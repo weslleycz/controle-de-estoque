@@ -3,6 +3,7 @@ import { ReactNode, useEffect } from 'react';
 import { ContainerDark } from 'renderer/components/molecules/ContainerDark';
 import { ContainerLight } from 'renderer/components/molecules/ContainerLight';
 import { ThemeModel } from 'renderer/store/theme.store';
+import useSystemTheme from 'use-system-theme';
 
 type Props = {
   children: ReactNode;
@@ -16,8 +17,14 @@ export function Container({ children }: Props) {
   ) as unknown as (valor: string) => void;
   const theme = useStoreState((state: ThemeModel) => state.theme) as string;
 
+  const systemTheme = useSystemTheme();
+
   useEffect(() => {
-    addTheme(window.electron.store.get('theme'));
+    if (window.electron.store.get('theme') === 'system') {
+      addTheme(systemTheme);
+    } else {
+      addTheme(window.electron.store.get('theme'));
+    }
   }, []);
 
   // eslint-disable-next-line prettier/prettier

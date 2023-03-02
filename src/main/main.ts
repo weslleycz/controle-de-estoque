@@ -18,7 +18,11 @@ import { schema } from './schemas';
 import { resolveHtmlPath } from './util';
 
 // eslint-disable-next-line object-shorthand
-const store = new Store({ name: 'base', schema: schema });
+const store = new Store({
+  name: 'base',
+  schema: schema,
+  accessPropertiesByDotNotation: false,
+});
 
 // app.getPath('userData');
 
@@ -29,6 +33,8 @@ class AppUpdater {
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
+
+let fullscreen = false;
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -51,6 +57,10 @@ ipcMain.on('electron-store-delete', async (event, key) => {
 
 ipcMain.on('window-exit', async (event) => {
   app.quit();
+});
+
+ipcMain.on('window-relaunch', async (event) => {
+  mainWindow.setFullScreen(store.get('fullscreen'));
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -96,6 +106,7 @@ const createWindow = async () => {
     show: false,
     width: 1280,
     height: 720,
+    fullscreen: store.get('fullscreen'),
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged
