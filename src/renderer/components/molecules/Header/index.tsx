@@ -5,7 +5,11 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import { ThemeModel } from 'renderer/store/theme.store';
 import './style.scss';
 
-export const Header = () => {
+type Pros = {
+  title: string;
+};
+
+export const Header = ({ title }: Pros) => {
   const addTheme = useStoreActions(
     (state: ThemeModel) => state.addTheme
     // eslint-disable-next-line no-unused-vars
@@ -22,11 +26,11 @@ export const Header = () => {
       <Box className="container">
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
-          spacing={{ xs: 4, sm: 6, md: 70 }}
+          spacing={{ xs: 4, sm: 6, md: 90 }}
         >
           <Box padding={3}>
-            <Typography variant="h5" gutterBottom>
-              Dashboard
+            <Typography variant="h4" gutterBottom>
+              {title}
             </Typography>
           </Box>
           <Box className="btn-avatar">
@@ -39,19 +43,19 @@ export const Header = () => {
               {theme === 'dark' ? (
                 <DarkModeIcon
                   onClick={() => handlingTheme()}
-                  sx={{ cursor: 'pointer' }}
+                  sx={{ cursor: 'pointer', ':hover': { opacity: 0.6 } }}
                 />
               ) : (
                 <Brightness6Icon
                   onClick={() => handlingTheme()}
-                  sx={{ cursor: 'pointer' }}
+                  sx={{ cursor: 'pointer', ':hover': { opacity: 0.6 } }}
                 />
               )}
               <Box>
-                <Avatar sx={{ bgcolor: '#1ED760' }}>W</Avatar>
+                <Avatar sx={{ bgcolor: '#1ED760' }}>A</Avatar>
               </Box>
               <Typography variant="subtitle1" gutterBottom>
-                weslleysouza22@gmail.com
+                admin
               </Typography>
             </Stack>
           </Box>

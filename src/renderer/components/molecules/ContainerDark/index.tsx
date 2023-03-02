@@ -11,7 +11,14 @@ export const ContainerDark = ({ children }: Props) => {
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      <Box bgcolor="#22262F" color="#ffffff" sx={{ height: '100vh' }}>
+      <Box
+        className='containerDark'
+        bgcolor="#22262F"
+        color="#ffffff"
+        sx={{
+          height: '100vh',
+        }}
+      >
         {children}
       </Box>
     </>
