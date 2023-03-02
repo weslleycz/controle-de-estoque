@@ -10,6 +10,6 @@ export const schema:
   theme,
   fullscreen: {
     type: 'boolean',
-    default: false,
+    default: true,
   },
 };

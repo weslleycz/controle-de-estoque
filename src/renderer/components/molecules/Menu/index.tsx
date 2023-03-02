@@ -5,15 +5,19 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import { Box, Button, List, ListItem } from '@mui/material';
 import { useStoreState } from 'easy-peasy';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { NavLink, } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { ThemeModel } from 'renderer/store/theme.store';
 import logoDark from '../../../assets/logo_dark.svg';
 import logoLight from '../../../assets/logo_light.svg';
 import './style.scss';
 
 export const Menu = () => {
+  const navigate = useNavigate();
   const theme = useStoreState((state: ThemeModel) => state.theme) as string;
   useHotkeys('esc', () => window.electron.ipcRenderer.exit(), []);
+  useHotkeys('f2', () => navigate('/'), []);
+  useHotkeys('f4', () => navigate('/config'), []);
+
   return (
     <>
       <Box className="cont">
@@ -41,7 +45,7 @@ export const Menu = () => {
                 size="large"
                 startIcon={<ShoppingBasketIcon />}
               >
-                <strong>Caixa (F1)</strong>
+                <strong>Caixa (F2)</strong>
               </Button>
             </ListItem>
           </NavLink>
@@ -52,20 +56,20 @@ export const Menu = () => {
               size="large"
               startIcon={<Inventory2Icon />}
             >
-              <strong>Produtos (F2)</strong>
+              <strong>Produtos (F3)</strong>
             </Button>
           </ListItem>
 
           <NavLink to="/config">
-          <ListItem component="div" disablePadding>
-            <Button
-              color={theme === 'dark' ? 'inherit' : 'primary'}
-              size="large"
-              startIcon={<SettingsIcon />}
-            >
-              <strong>Configurações (F3)</strong>
-            </Button>
-          </ListItem>
+            <ListItem component="div" disablePadding>
+              <Button
+                color={theme === 'dark' ? 'inherit' : 'primary'}
+                size="large"
+                startIcon={<SettingsIcon />}
+              >
+                <strong>Configurações (F4)</strong>
+              </Button>
+            </ListItem>
           </NavLink>
 
           <ListItem sx={{ marginTop: 40 }} component="div" disablePadding>

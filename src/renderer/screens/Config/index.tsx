@@ -12,7 +12,6 @@ export const Config = () => {
   const systemTheme = useSystemTheme();
   const addTheme = useStoreActions(
     (state: ThemeModel) => state.addTheme
-    // eslint-disable-next-line no-unused-vars
   ) as unknown as (valor: string) => void;
   const theme = useStoreState((state: ThemeModel) => state.theme) as string;
 
