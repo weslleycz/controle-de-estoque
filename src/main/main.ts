@@ -49,6 +49,10 @@ ipcMain.on('electron-store-delete', async (event, key) => {
   store.delete(key);
 });
 
+ipcMain.on('window-exit', async (event) => {
+  app.quit();
+});
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
@@ -88,6 +92,7 @@ const createWindow = async () => {
   };
 
   mainWindow = new BrowserWindow({
+    autoHideMenuBar: true,
     show: false,
     width: 1280,
     height: 720,
