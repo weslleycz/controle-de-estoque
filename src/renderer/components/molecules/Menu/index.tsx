@@ -16,6 +16,7 @@ export const Menu = () => {
   const theme = useStoreState((state: ThemeModel) => state.theme) as string;
   useHotkeys('esc', () => window.electron.ipcRenderer.exit(), []);
   useHotkeys('f2', () => navigate('/'), []);
+  useHotkeys('f3', () => navigate('/stock'), []);
   useHotkeys('f4', () => navigate('/config'), []);
 
   return (
@@ -50,15 +51,17 @@ export const Menu = () => {
             </ListItem>
           </NavLink>
 
+          <NavLink to="/stock">
           <ListItem component="div" disablePadding>
             <Button
               color={theme === 'dark' ? 'inherit' : 'primary'}
               size="large"
               startIcon={<Inventory2Icon />}
             >
-              <strong>Produtos (F3)</strong>
+              <strong>Estoque (F3)</strong>
             </Button>
           </ListItem>
+          </NavLink>
 
           <NavLink to="/config">
             <ListItem component="div" disablePadding>

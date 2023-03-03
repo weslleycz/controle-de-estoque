@@ -13,12 +13,12 @@ import log from 'electron-log';
 import Store from 'electron-store';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
+import { schema } from './configs';
 import MenuBuilder from './menu';
-import { schema } from './schemas';
 import { resolveHtmlPath } from './util';
 
 // eslint-disable-next-line object-shorthand
-const store = new Store({
+const config = new Store({
   name: 'base',
   schema: schema,
   accessPropertiesByDotNotation: false,
@@ -34,8 +34,6 @@ class AppUpdater {
   }
 }
 
-let fullscreen = false;
-
 let mainWindow: BrowserWindow | null = null;
 
 ipcMain.on('ipc-example', async (event, arg) => {
@@ -44,15 +42,15 @@ ipcMain.on('ipc-example', async (event, arg) => {
   event.reply('ipc-example', msgTemplate('pong'));
 });
 ipcMain.on('electron-store-get', async (event, val) => {
-  event.returnValue = store.get(val);
+  event.returnValue = config.get(val);
 });
 
 ipcMain.on('electron-store-set', async (event, key, val) => {
-  store.set(key, val);
+  config.set(key, val);
 });
 
 ipcMain.on('electron-store-delete', async (event, key) => {
-  store.delete(key);
+  config.delete(key);
 });
 
 ipcMain.on('window-exit', async (event) => {
@@ -60,7 +58,7 @@ ipcMain.on('window-exit', async (event) => {
 });
 
 ipcMain.on('window-relaunch', async (event) => {
-  mainWindow.setFullScreen(store.get('fullscreen'));
+  mainWindow.setFullScreen(config.get('fullscreen'));
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -106,7 +104,7 @@ const createWindow = async () => {
     show: false,
     width: 1280,
     height: 720,
-    fullscreen: store.get('fullscreen'),
+    fullscreen: config.get('fullscreen'),
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged

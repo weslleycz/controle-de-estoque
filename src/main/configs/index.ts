@@ -1,5 +1,4 @@
 import { Schema } from 'electron-store';
-import { theme } from './theme.schema';
 // eslint-disable-next-line no-unused-vars, import/prefer-default-export
 export const schema:
   | Schema<{
@@ -7,7 +6,10 @@ export const schema:
     }>
   | undefined = {
   config: {},
-  theme,
+  theme: {
+    type: 'string',
+    default: 'system',
+  },
   fullscreen: {
     type: 'boolean',
     default: true,
