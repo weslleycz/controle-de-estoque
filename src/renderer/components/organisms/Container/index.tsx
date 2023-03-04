@@ -27,9 +27,7 @@ export function Container({ children }: Props) {
     }
   }, []);
 
-  // eslint-disable-next-line prettier/prettier
   return (
-    // eslint-disable-next-line react/self-closing-comp, react/jsx-no-useless-fragment
     <>
       {theme === 'dark' ? (
         <ContainerDark>{children}</ContainerDark>
