@@ -76,10 +76,7 @@ export const Stock = () => {
         return (
           <Box style={{ cursor: 'pointer' }}>
             <IconButton sx={{ marginLeft: 26 }} aria-label="Editar">
-              <EditIcon
-                sx={{ color: theme === 'dark' ? '#ffffff' : '' }}
-                onClick={() => console.log(params.row.id)}
-              />
+              <EditIcon onClick={() => console.log(params.row.id)} />
             </IconButton>
             <IconButton sx={{ marginLeft: 2 }} aria-label="Excluir">
               <DeleteIcon
@@ -119,12 +116,15 @@ export const Stock = () => {
         </Grid>
         <Grid item xs={30} md={10}>
           <Header title="Estoque" />
-          <Container sx={{ height: 400, width: '100%' }}>
+          <Container sx={{ height: 400, width: '100%', marginTop: 2 }}>
             <Box
               sx={{
-                border: `${theme === 'dark' ? '1px solid #ffffff' : '1px solid #cfcfcf'}`,
+                border: `${
+                  theme === 'dark' ? '1px solid #cfcfcf' : '1px solid #cfcfcf'
+                }`,
+                background: '#fff',
                 borderTopRightRadius: 4,
-                borderTopLeftRadius:4,
+                borderTopLeftRadius: 4,
                 borderBottomStyle: 'none',
               }}
               className="conteiner"
@@ -138,12 +138,11 @@ export const Stock = () => {
               >
                 <Paper
                   sx={{
-                    border: `${theme === 'dark' ? '2px solid #ffffff' : ''}`,
                     p: '10px 5px',
                     display: 'flex',
                     alignItems: 'center',
                     width: '40%',
-                    background: theme === 'dark' ? '#22262F' : '',
+                    border: '1px solid #c5c5c5',
                   }}
                 >
                   <InputBase
@@ -151,7 +150,6 @@ export const Stock = () => {
                     sx={{
                       width: 400,
                       marginLeft: 1,
-                      color: theme === 'dark' ? '#ffffff' : '',
                     }}
                     placeholder="Nome ou código de barras"
                   />
@@ -160,9 +158,7 @@ export const Stock = () => {
                     sx={{ p: '10px' }}
                     aria-label="search"
                   >
-                    <SearchIcon
-                      sx={{ color: theme === 'dark' ? '#ffffff' : '' }}
-                    />
+                    <SearchIcon />
                   </IconButton>
                 </Paper>
                 <Button
@@ -175,7 +171,7 @@ export const Stock = () => {
               </Stack>
             </Box>
             <DataGrid
-              sx={{ color: theme === 'dark' ? '#ffffff' : '' }}
+              sx={{ background: '#fff' }}
               className="table"
               rows={list}
               columns={columns}

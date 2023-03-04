@@ -13,19 +13,18 @@ import log from 'electron-log';
 import Store from 'electron-store';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
+import  './api';
 import { schema } from './configs';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import "./api";
 
-// eslint-disable-next-line object-shorthand
 const config = new Store({
-  name: 'base',
+  name: 'config',
   schema: schema,
   accessPropertiesByDotNotation: false,
 });
 
-// app.getPath('userData');
+export const url = app.getPath('appData');
 
 class AppUpdater {
   constructor() {

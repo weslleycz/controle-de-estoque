@@ -113,7 +113,7 @@ export const Config = () => {
                       borderColor:
                         theme === 'dark' &&
                         window.electron.store.get('theme') != 'system'
-                          ? '#077E71'
+                          ? '#06ac98'
                           : 'ButtonFace',
                       cursor: 'pointer',
                     }}

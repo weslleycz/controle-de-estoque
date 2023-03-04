@@ -27,7 +27,7 @@ export const Menu = () => {
             {theme === 'dark' ? (
               <img
                 style={{ width: 100, marginTop: 30, opacity: 0.9 }}
-                src={logoLight}
+                src={logoDark}
                 alt="Logo"
                 loading="lazy"
               ></img>
