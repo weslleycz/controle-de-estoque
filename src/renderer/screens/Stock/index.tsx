@@ -77,7 +77,7 @@ export const Stock = () => {
           <Box style={{ cursor: 'pointer' }}>
             <IconButton sx={{ marginLeft: 26 }} aria-label="Editar">
               <EditIcon
-                sx={{ color: '#ffff' }}
+                sx={{ color: theme === 'dark' ? '#ffffff' : '' }}
                 onClick={() => console.log(params.row.id)}
               />
             </IconButton>
@@ -121,7 +121,12 @@ export const Stock = () => {
           <Header title="Estoque" />
           <Container sx={{ height: 400, width: '100%' }}>
             <Box
-              sx={{ border: '2px solid #ffffff', borderTopRightRadius: 4 }}
+              sx={{
+                border: `${theme === 'dark' ? '1px solid #ffffff' : '1px solid #cfcfcf'}`,
+                borderTopRightRadius: 4,
+                borderTopLeftRadius:4,
+                borderBottomStyle: 'none',
+              }}
               className="conteiner"
             >
               <Stack

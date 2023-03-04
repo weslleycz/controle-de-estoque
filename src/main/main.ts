@@ -16,6 +16,7 @@ import path from 'path';
 import { schema } from './configs';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import "./api";
 
 // eslint-disable-next-line object-shorthand
 const config = new Store({
