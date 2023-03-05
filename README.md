@@ -12,6 +12,7 @@ Um programa desktop simples de controle de estoque gratuito é ideal para empres
 - [Scss](https://sass-lang.com)
 - [React](https://pt-br.reactjs.org)
 - [Node.js](https://nodejs.org/en/)
+- [Express.js](https://expressjs.com)
 - [TypeScript](https://www.typescriptlang.org/)
 
 
