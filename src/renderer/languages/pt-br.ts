@@ -173,7 +173,7 @@ export interface GridLocaleTextApi {
 
 export const GRID_DEFAULT_LOCALE_TEXT: GridLocaleText = {
   // Root
-  noRowsLabel: 'Sem produtos',
+  noRowsLabel: 'Nem um produto encontrado',
   noResultsOverlayLabel: 'Nenhum resultado encontrado.',
 
   // Density selector toolbar button text

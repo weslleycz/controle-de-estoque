@@ -5,7 +5,6 @@ export interface ThemeModel {
   addTheme: Action<ThemeModel, string>;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const store = createStore<ThemeModel>({
   theme: 'dark',
 

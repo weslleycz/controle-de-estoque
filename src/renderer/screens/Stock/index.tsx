@@ -6,45 +6,55 @@ import {
   Box,
   Button,
   Container,
-  createTheme,
   Grid,
   IconButton,
   InputBase,
   Paper,
   Stack,
-  ThemeProvider,
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useStoreState } from 'easy-peasy';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { notifySuccess } from 'renderer/components/atoms/Notify';
 import { Header } from 'renderer/components/molecules/Header';
 import { Menu } from 'renderer/components/molecules/Menu';
+import { Modal } from 'renderer/components/molecules/Modal';
 import { GRID_DEFAULT_LOCALE_TEXT } from 'renderer/languages/pt-br';
 import { api } from 'renderer/services/apí';
-import { ThemeModel } from 'renderer/store/theme.store';
 import { IProduct } from 'renderer/types/IProduct';
 import './style.scss';
 
 export const Stock = () => {
-  const theme = useStoreState((state: ThemeModel) => state.theme) as string;
+  const [open, setOpen] = useState(false);
+  const [id, setID] = useState('');
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const [list, setList] = useState<IProduct[]>([]);
+  const [products, setProduct] = useState<IProduct[]>([]);
 
   const { isLoading, data, refetch }: any = useQuery('repoData', async () => {
     try {
       const res = (await (await api.get('/products')).data.data) as IProduct[];
       setList(res);
+      setProduct(res);
     } catch (error) {
       setList([]);
     }
   }) as unknown as IProduct[];
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async () => {
     notifySuccess('Apagado com sucesso!!');
     await api.delete(`/products/${id}`);
     refetch();
+    setOpen(false);
+  };
+
+  const handleOpemModal = (id: string) => {
+    setID(id);
+    setOpen(true);
   };
 
   const columns: GridColDef[] = [
@@ -83,7 +93,7 @@ export const Stock = () => {
             <IconButton sx={{ marginLeft: 2 }} aria-label="Excluir">
               <DeleteIcon
                 color="error"
-                onClick={() => handleDelete(params.row.id.toString())}
+                onClick={() => handleOpemModal(params.row.id.toString())}
               />
             </IconButton>
           </Box>
@@ -93,86 +103,112 @@ export const Stock = () => {
   ];
 
   const handleFilter = (valor: string) => {
-    if (valor != '') {
-    } else {
+    if (valor !== '') {
+      const result = products.filter((product) => {
+        if (product.name.toLowerCase().includes(valor.toLowerCase())) {
+          return true;
+        } else if (
+          product.code_bar
+            .toLowerCase()
+            .includes(valor.toLowerCase().toLowerCase())
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setList(result);
+    }else{
+      refetch();
     }
   };
 
+  //
+
   return (
     <>
-        <Grid container>
-          <Grid item xs={4} md={2}>
-            <Menu />
-          </Grid>
-          <Grid item xs={30} md={10}>
-            <Header title="Estoque" />
-            <Container sx={{ height: 450, width: '100%', marginTop: 2 }}>
-              <Box
-                sx={{
-                  borderTopRightRadius: 4,
-                  borderTopLeftRadius: 4,
-                  borderBottomStyle: 'none',
-                }}
-                className="conteiner"
-              >
-                <Stack
-                  padding={2}
-                  marginLeft={1}
-                  marginRight={5}
-                  direction="row"
-                  spacing={60}
-                >
-                  <Paper
-                    sx={{
-                      p: '10px 5px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      width: '40%',
-                    }}
-                  >
-                    <InputBase
-                      onChange={(e) => handleFilter(e.target.value)}
-                      sx={{
-                        width: 400,
-                        marginLeft: 1,
-                      }}
-                      placeholder="Nome ou código de barras"
-                    />
-                    <IconButton
-                      type="button"
-                      sx={{ p: '10px' }}
-                      aria-label="search"
-                    >
-                      <SearchIcon />
-                    </IconButton>
-                  </Paper>
-                  <Button
-                    size="large"
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                  >
-                    Produto
-                  </Button>
-                </Stack>
-              </Box>
-              {isLoading ? (
-                <div>Loading...</div>
-              ) : (
-                <DataGrid
-                  className="table"
-                  rows={list}
-                  columns={columns}
-                  loading={isLoading}
-                  pageSize={5}
-                  getRowId={(rows) => rows.id}
-                  rowsPerPageOptions={[5]}
-                  autoPageSize
-                  localeText={GRID_DEFAULT_LOCALE_TEXT}
-                />
-              )}
-            </Container>
-          </Grid>
+      <Grid container>
+        <Grid item xs={4} md={2}>
+          <Menu />
         </Grid>
+        <Grid item xs={30} md={10}>
+          <Header title="Estoque" />
+          <Container sx={{ height: 450, width: '100%', marginTop: 2 }}>
+            <Box
+              sx={{
+                borderTopRightRadius: 4,
+                borderTopLeftRadius: 4,
+                borderBottomStyle: 'none',
+              }}
+              className="conteiner"
+            >
+              <Stack
+                padding={2}
+                marginLeft={1}
+                marginRight={5}
+                direction="row"
+                spacing={60}
+              >
+                <Paper
+                  sx={{
+                    p: '10px 5px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    width: '40%',
+                  }}
+                >
+                  <InputBase
+                    onChange={(e) => handleFilter(e.target.value)}
+                    sx={{
+                      width: 400,
+                      marginLeft: 1,
+                    }}
+                    placeholder="Nome ou código de barras"
+                  />
+                  <IconButton
+                    type="button"
+                    sx={{ p: '10px' }}
+                    aria-label="search"
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </Paper>
+                <Button
+                  size="large"
+                  variant="contained"
+                  startIcon={<AddIcon />}
+                >
+                  Produto
+                </Button>
+              </Stack>
+            </Box>
+            {isLoading ? (
+              <div>Loading...</div>
+            ) : (
+              <DataGrid
+                className="table"
+                rows={list}
+                columns={columns}
+                loading={isLoading}
+                pageSize={5}
+                getRowId={(rows) => rows.id}
+                rowsPerPageOptions={[5]}
+                autoPageSize
+                localeText={GRID_DEFAULT_LOCALE_TEXT}
+              />
+            )}
+          </Container>
+        </Grid>
+      </Grid>
+      <Modal
+        text="Você tem certeza que deseja apagar este produto? Esta ação não pode
+            ser desfeita e todos os dados relacionados a ele serão
+            permanentemente excluídos."
+        title="Apagar produto"
+        open={open}
+        handleClose={handleClose}
+        handleMethod={handleDelete}
+      />
     </>
   );
 };
