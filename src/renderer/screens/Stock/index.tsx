@@ -170,7 +170,7 @@ export const Stock = () => {
                     <SearchIcon />
                   </IconButton>
                 </Paper>
-                <FormeModal />
+                <FormeModal refetch={refetch} />
               </Stack>
             </Box>
             {isLoading ? (
