@@ -12,7 +12,7 @@ type Props = {
   title: string;
   open: boolean;
   handleClose: () => void;
-  handleMethod:() => void;
+  handleMethod: () => void;
 };
 
 export const Modal = ({
@@ -20,7 +20,7 @@ export const Modal = ({
   title,
   handleClose,
   open,
-  handleMethod
+  handleMethod,
 }: Props) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -38,10 +38,15 @@ export const Modal = ({
           <DialogContentText>{text}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button variant="outlined" autoFocus onClick={handleClose}>
             Cancelar
           </Button>
-          <Button onClick={handleMethod} autoFocus>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={handleMethod}
+            autoFocus
+          >
             Apagar
           </Button>
         </DialogActions>

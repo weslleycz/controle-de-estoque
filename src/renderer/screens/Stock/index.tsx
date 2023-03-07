@@ -1,10 +1,8 @@
-import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
-  Button,
   Container,
   Grid,
   IconButton,
@@ -16,6 +14,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { notifySuccess } from 'renderer/components/atoms/Notify';
+import { FormeModal } from 'renderer/components/molecules/FormeModal';
 import { Header } from 'renderer/components/molecules/Header';
 import { Menu } from 'renderer/components/molecules/Menu';
 import { Modal } from 'renderer/components/molecules/Modal';
@@ -118,12 +117,10 @@ export const Stock = () => {
         }
       });
       setList(result);
-    }else{
+    } else {
       refetch();
     }
   };
-
-  //
 
   return (
     <>
@@ -173,13 +170,7 @@ export const Stock = () => {
                     <SearchIcon />
                   </IconButton>
                 </Paper>
-                <Button
-                  size="large"
-                  variant="contained"
-                  startIcon={<AddIcon />}
-                >
-                  Produto
-                </Button>
+                <FormeModal />
               </Stack>
             </Box>
             {isLoading ? (

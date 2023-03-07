@@ -77,7 +77,7 @@ export const Menu = () => {
 
           <ListItem sx={{ marginTop: 40 }} component="div" disablePadding>
             <Button
-              color={theme === 'dark' ? 'inherit' : 'primary'}
+              color={'error'}
               size="large"
               startIcon={<LogoutIcon />}
               onClick={() => window.electron.ipcRenderer.exit()}
