@@ -1,5 +1,5 @@
-import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   Box,
   Button,
@@ -7,6 +7,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
   Stack,
   TextField,
   useMediaQuery,
@@ -18,12 +19,14 @@ import { useState } from 'react';
 import { notifyError, notifySuccess } from 'renderer/components/atoms/Notify';
 import { api } from 'renderer/services/apí';
 import * as Yup from 'yup';
+import {IProduct} from '../../../types/IProduct';
 
 type Props = {
   refetch: () => void;
+  product:IProduct
 };
 
-export const FormeModal = ({ refetch }: Props) => {
+export const FormeModalEdit = ({ refetch,product }: Props) => {
   const useStyles = makeStyles({
     root: {
       '& input[type=number]': {
@@ -42,7 +45,7 @@ export const FormeModal = ({ refetch }: Props) => {
   });
 
   const SignupSchema = Yup.object().shape({
-    name: Yup.string().required('Required'),
+    name: Yup.string().required(),
     price: Yup.number()
       .positive(' Lembre-se de que apenas valores positivos são aceitos.')
       .required('Esse campo e obrigatório'),
@@ -62,14 +65,13 @@ export const FormeModal = ({ refetch }: Props) => {
   const handleClose = () => setOpen(false);
   return (
     <>
-      <Button
+      <IconButton
         onClick={() => handleOpen()}
-        size="large"
-        variant="contained"
-        startIcon={<AddIcon />}
+        sx={{ marginLeft: 26 }}
+        aria-label="Editar"
       >
-        Produto
-      </Button>
+        <EditIcon />
+      </IconButton>
       <Dialog
         sx={{ padding: 5 }}
         fullScreen={fullScreen}
@@ -79,10 +81,10 @@ export const FormeModal = ({ refetch }: Props) => {
       >
         <Formik
           initialValues={{
-            name: '',
-            price: 0,
-            quantity: 1,
-            code_bar: '',
+            name: product.name,
+            price: product.price,
+            quantity: product.quantity,
+            code_bar: product.code_bar,
           }}
           validationSchema={SignupSchema}
           onSubmit={async (values, { resetForm, setErrors }) => {
@@ -119,7 +121,7 @@ export const FormeModal = ({ refetch }: Props) => {
                       sx={{ cursor: 'pointer' }}
                     />
                   </Box>
-                  {'Criar Novo Produto'}
+                  {'Editar Produto'}
                 </DialogTitle>
                 <DialogContent>
                   <Box>
@@ -192,7 +194,7 @@ export const FormeModal = ({ refetch }: Props) => {
                     size="large"
                     sx={{ margin: 2 }}
                   >
-                    Criar
+                    Editar
                   </Button>
                 </DialogActions>
               </Form>

@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { notifySuccess } from 'renderer/components/atoms/Notify';
 import { FormeModal } from 'renderer/components/molecules/FormeModal';
+import { FormeModalEdit } from 'renderer/components/molecules/FormeModalEdit';
 import { Header } from 'renderer/components/molecules/Header';
 import { Menu } from 'renderer/components/molecules/Menu';
 import { Modal } from 'renderer/components/molecules/Modal';
@@ -86,9 +87,13 @@ export const Stock = () => {
       renderCell: (params) => {
         return (
           <Box style={{ cursor: 'pointer' }}>
-            <IconButton sx={{ marginLeft: 26 }} aria-label="Editar">
-              <EditIcon onClick={() => console.log(params.row.id)} />
-            </IconButton>
+            <FormeModalEdit product={{
+              code_bar:params.row.code_bar,
+              id:params.row.id,
+              name:params.row.name,
+              price:params.row.price,
+              quantity:params.row.quantity
+            }} refetch={refetch} />
             <IconButton sx={{ marginLeft: 2 }} aria-label="Excluir">
               <DeleteIcon
                 color="error"
