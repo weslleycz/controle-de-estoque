@@ -19,14 +19,14 @@ import { useState } from 'react';
 import { notifyError, notifySuccess } from 'renderer/components/atoms/Notify';
 import { api } from 'renderer/services/apí';
 import * as Yup from 'yup';
-import {IProduct} from '../../../types/IProduct';
+import { IProduct } from '../../../types/IProduct';
 
 type Props = {
   refetch: () => void;
-  product:IProduct
+  product: IProduct;
 };
 
-export const FormeModalEdit = ({ refetch,product }: Props) => {
+export const FormeModalEdit = ({ refetch, product }: Props) => {
   const useStyles = makeStyles({
     root: {
       '& input[type=number]': {
@@ -82,7 +82,7 @@ export const FormeModalEdit = ({ refetch,product }: Props) => {
         <Formik
           initialValues={{
             name: product.name,
-            price: product.price,
+            price: parseFloat((product.price / 100).toFixed(2).toString()),
             quantity: product.quantity,
             code_bar: product.code_bar,
           }}
@@ -90,7 +90,7 @@ export const FormeModalEdit = ({ refetch,product }: Props) => {
           onSubmit={async (values, { resetForm, setErrors }) => {
             try {
               const { code_bar, name, price, quantity } = values;
-              await api.post('/products', {
+              await api.put(`/products/${product.id}`, {
                 code_bar,
                 name,
                 price: price * 100,
@@ -98,7 +98,7 @@ export const FormeModalEdit = ({ refetch,product }: Props) => {
               });
               refetch();
               handleClose();
-              notifySuccess('Produto criado com sucesso');
+              notifySuccess('Editado com sucesso');
             } catch (error) {
               notifyError('Ocorreu um erro não espertado ');
             }

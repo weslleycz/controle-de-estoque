@@ -1,5 +1,4 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
@@ -87,13 +86,16 @@ export const Stock = () => {
       renderCell: (params) => {
         return (
           <Box style={{ cursor: 'pointer' }}>
-            <FormeModalEdit product={{
-              code_bar:params.row.code_bar,
-              id:params.row.id,
-              name:params.row.name,
-              price:params.row.price,
-              quantity:params.row.quantity
-            }} refetch={refetch} />
+            <FormeModalEdit
+              product={{
+                code_bar: params.row.code_bar,
+                id: params.row.id,
+                name: params.row.name,
+                price: params.row.price,
+                quantity: params.row.quantity,
+              }}
+              refetch={refetch}
+            />
             <IconButton sx={{ marginLeft: 2 }} aria-label="Excluir">
               <DeleteIcon
                 color="error"
