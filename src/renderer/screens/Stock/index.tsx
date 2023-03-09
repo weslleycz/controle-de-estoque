@@ -1,13 +1,12 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
   Container,
   Grid,
   IconButton,
-  InputBase,
   Paper,
   Stack,
+  TextField,
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
@@ -138,48 +137,17 @@ export const Stock = () => {
         <Grid item xs={30} md={10}>
           <Header title="Estoque" />
           <Container sx={{ height: 450, width: '100%', marginTop: 2 }}>
-            <Box
-              sx={{
-                borderTopRightRadius: 4,
-                borderTopLeftRadius: 4,
-                borderBottomStyle: 'none',
-              }}
-              className="conteiner"
-            >
-              <Stack
-                padding={2}
-                marginLeft={1}
-                marginRight={5}
-                direction="row"
-                spacing={60}
-              >
-                <Paper
-                  sx={{
-                    p: '10px 5px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    width: '40%',
-                  }}
-                >
-                  <InputBase
+              <Box marginBottom={2}>
+                <Stack direction="row" spacing={80}>
+                  <TextField
+                    sx={{ width: 300 }}
+                    label="Nome ou código de barras"
                     onChange={(e) => handleFilter(e.target.value)}
-                    sx={{
-                      width: 400,
-                      marginLeft: 1,
-                    }}
-                    placeholder="Nome ou código de barras"
+                    variant="outlined"
                   />
-                  <IconButton
-                    type="button"
-                    sx={{ p: '10px' }}
-                    aria-label="search"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </Paper>
-                <FormeModal refetch={refetch} />
-              </Stack>
-            </Box>
+                  <FormeModal refetch={refetch} />
+                </Stack>
+              </Box>
             {isLoading ? (
               <div>Loading...</div>
             ) : (
