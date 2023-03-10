@@ -143,21 +143,6 @@ img {
   user-select: none;
 }
 
-html,
-body {
-  ::-webkit-scrollbar-track {
-    background-color: rgb(255, 255, 255);
-  }
-  ::-webkit-scrollbar {
-    width: 6px;
-    background-color: rgb(255, 255, 255);
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #06ac98;
-    border-radius: 10%;
-  }
-}
-
 @media (max-width: 720px) {
   html {
     font-size: 87.5%;

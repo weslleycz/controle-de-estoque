@@ -12,12 +12,12 @@ import { Response as IResponse } from 'express';
 import { makeValidateBody } from 'express-class-validator';
 import { v4 as uuidv4 } from 'uuid';
 import { store } from '../../database/store';
-import { createProduct } from './Product.dto';
+import { createProductDTO } from './Product.dto';
 
 @Controller('/products')
 export class Product {
-  @Post('', [makeValidateBody(createProduct)])
-  public create(@Response() res: IResponse, @Body() body: createProduct) {
+  @Post('', [makeValidateBody(createProductDTO)])
+  public create(@Response() res: IResponse, @Body() body: createProductDTO) {
     const id = uuidv4();
     const { code_bar, name, price, quantity } = body;
 
@@ -43,11 +43,11 @@ export class Product {
     }
   }
 
-  @Put('/:id', [makeValidateBody(createProduct)])
+  @Put('/:id', [makeValidateBody(createProductDTO)])
   public async update(
     @Params('id') id: string,
     @Response() res: IResponse,
-    @Body() body: createProduct
+    @Body() body: createProductDTO
   ) {
     const product = store.get(`products.${id}`);
     if (!product) {

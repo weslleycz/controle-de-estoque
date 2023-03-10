@@ -4,7 +4,7 @@ import {
   IsNumber
 } from "class-validator";
 
-export class createProduct {
+export class createProductDTO {
   @IsNotEmpty({ message: "Esse campo e obrigatório" })
   @IsString()
   name!: string;

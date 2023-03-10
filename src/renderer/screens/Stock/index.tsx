@@ -4,7 +4,6 @@ import {
   Container,
   Grid,
   IconButton,
-  Paper,
   Stack,
   TextField,
 } from '@mui/material';
@@ -137,17 +136,17 @@ export const Stock = () => {
         <Grid item xs={30} md={10}>
           <Header title="Estoque" />
           <Container sx={{ height: 450, width: '100%', marginTop: 2 }}>
-              <Box marginBottom={2}>
-                <Stack direction="row" spacing={80}>
-                  <TextField
-                    sx={{ width: 300 }}
-                    label="Nome ou código de barras"
-                    onChange={(e) => handleFilter(e.target.value)}
-                    variant="outlined"
-                  />
-                  <FormeModal refetch={refetch} />
-                </Stack>
-              </Box>
+            <Box marginBottom={2}>
+              <Stack direction="row" spacing={80}>
+                <TextField
+                  sx={{ width: 300 }}
+                  label="Nome ou código de barras"
+                  onChange={(e) => handleFilter(e.target.value)}
+                  variant="outlined"
+                />
+                <FormeModal refetch={refetch} />
+              </Stack>
+            </Box>
             {isLoading ? (
               <div>Loading...</div>
             ) : (
