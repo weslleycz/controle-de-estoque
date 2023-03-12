@@ -2,13 +2,13 @@ import Inventory2Icon from '@mui/icons-material/Inventory2';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import CalculateIcon from '@mui/icons-material/Calculate';
 import { Box, Button, List, ListItem } from '@mui/material';
 import { useStoreState } from 'easy-peasy';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ThemeModel } from 'renderer/store/theme.store';
 import logoDark from '../../../assets/logo_dark.svg';
-import logoLight from '../../../assets/logo_light.svg';
 import './style.scss';
 
 export const Menu = () => {
@@ -51,16 +51,29 @@ export const Menu = () => {
             </ListItem>
           </NavLink>
 
+
           <NavLink to="/stock">
-          <ListItem component="div" disablePadding>
-            <Button
-              color={theme === 'dark' ? 'inherit' : 'primary'}
-              size="large"
-              startIcon={<Inventory2Icon />}
-            >
-              <strong>Estoque (F3)</strong>
-            </Button>
-          </ListItem>
+            <ListItem component="div" disablePadding>
+              <Button
+                color={theme === 'dark' ? 'inherit' : 'primary'}
+                size="large"
+                startIcon={<Inventory2Icon />}
+              >
+                <strong>Estoque (F3)</strong>
+              </Button>
+            </ListItem>
+          </NavLink>
+
+          <NavLink to="/stock">
+            <ListItem component="div" disablePadding>
+              <Button
+                color={theme === 'dark' ? 'inherit' : 'primary'}
+                size="large"
+                startIcon={<CalculateIcon />}
+              >
+                <strong>Calculadora (Tab)</strong>
+              </Button>
+            </ListItem>
           </NavLink>
 
           <NavLink to="/config">
@@ -75,7 +88,7 @@ export const Menu = () => {
             </ListItem>
           </NavLink>
 
-          <ListItem sx={{ marginTop: 40 }} component="div" disablePadding>
+          <ListItem sx={{ marginTop: 33 }} component="div" disablePadding>
             <Button
               color={'error'}
               size="large"
