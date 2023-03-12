@@ -1,7 +1,7 @@
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoneIcon from '@mui/icons-material/Done';
-import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import {
   Autocomplete,
   Box,
@@ -16,20 +16,30 @@ import {
 } from '@mui/material';
 import { DataGrid, GRID_DEFAULT_LOCALE_TEXT } from '@mui/x-data-grid';
 import { GridColDef } from '@mui/x-data-grid/models';
+import { useState } from 'react';
+import { useQuery } from 'react-query';
+import { notifyError } from 'renderer/components/atoms/Notify';
 import { Header } from 'renderer/components/molecules/Header';
 import { Menu } from 'renderer/components/molecules/Menu';
+import { api } from 'renderer/services/apí';
+import { IProduct } from 'renderer/types/IProduct';
 
-const top100Films = [
-  { label: 'The Shawshank Redemption', year: 1994 },
-  { label: 'The Godfather', year: 1972 },
-  { label: 'The Godfather: Part II', year: 1974 },
-  { label: 'The Dark Knight', year: 2008 },
-  { label: '12 Angry Men', year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: 'Pulp Fiction', year: 1994 },
-];
+export const Home = () => {
+  const { isLoading, error, data } = useQuery('products', async () => {
+    const product = (await (
+      await api.get('/products')
+    ).data.data) as IProduct[];
+    return product;
+  });
 
-export function Home() {
+  const [selected, setSelected] = useState<IProduct[]>([]);
+  const [max, setMax] = useState(1);
+  const [quantity, setQuantity] = useState(1);
+  const [price, setPrice] = useState('0,00');
+  const [money, setMoney] = useState(0);
+  const [values, setValues] = useState<string[]>([]);
+  const [productIndex, setProductIndex] = useState<Number | null>(null);
+
   const columns: GridColDef[] = [
     { field: 'name', headerName: 'Nome', width: 130 },
     {
@@ -68,6 +78,85 @@ export function Home() {
     },
   ];
 
+  const handleSeletProduct = (index: number) => {
+    setMax(data[index].quantity);
+    setProductIndex(index);
+    setPrice(
+      (data[index].price / 100).toLocaleString('pt-br', {
+        style: 'currency',
+        currency: 'BRL',
+      })
+    );
+  };
+
+  const handleSeletAddProduct = () => {
+    if (productIndex != null) {
+      const product = data[productIndex] as IProduct;
+      const isExist = selected.filter((iten) => iten.id === product.id);
+      if (isExist.length === 0) {
+        setSelected([
+          {
+            quantity: quantity,
+            code_bar: product.code_bar,
+            id: product.id,
+            name: product.name,
+            price: product.price,
+          },
+          ...selected,
+        ]);
+        setMoney(money + product.price * quantity);
+        setValues([]);
+        setPrice('0,00');
+        setQuantity(1);
+        setProductIndex(null);
+      } else {
+        const update = selected.map((iten) => {
+          if (iten.id === product.id) {
+            const { code_bar, id, name, price } = product;
+            return {
+              code_bar,
+              id,
+              name,
+              price,
+              quantity: iten.quantity + quantity,
+            } as IProduct;
+          } else {
+            return iten;
+          }
+        });
+        setMoney(money + product.price * quantity);
+        setSelected(update);
+        setValues([]);
+        setPrice('0,00');
+        setQuantity(1);
+        setProductIndex(null);
+      }
+    }
+  };
+
+  const handleSeletCancel = () => {
+    setSelected([]);
+    setValues([]);
+    setPrice('0,00');
+    setQuantity(1);
+    setProductIndex(null);
+    setMoney(0);
+  };
+
+  const handleSubmit = async () => {
+    if (selected.length != 0) {
+      try {
+        await api.post('/sales', {
+          products: selected,
+          money: money,
+        });
+        handleSeletCancel();
+      } catch (error) {
+        notifyError('Ocorreu um erro inesperado');
+      }
+    }
+  };
+
   return (
     <>
       <Grid container>
@@ -76,127 +165,159 @@ export function Home() {
         </Grid>
         <Grid item xs={30} md={10}>
           <Header title="Caixa" />
-          <Box padding={2}>
-            <InputLabel>Nome ou código de barras</InputLabel>
-            <Autocomplete
-              disablePortal
-              options={top100Films}
-              size={'medium'}
-              sx={{ width: '100%' }}
-              renderInput={(params) => <TextField {...params} />}
-            />
-            <Grid
-              container
-              rowSpacing={1}
-              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            >
-              <Grid item xs={6}>
-                <Paper sx={{ marginTop: 1, background: 'none' }}>
-                  <Box width={'150%'}>
-                    <Stack
-                      marginTop={1}
-                      direction="row"
-                      padding={3}
-                      spacing={3}
-                    >
-                      <Box>
-                        <InputLabel>Quantidade</InputLabel>
-                        <TextField
-                          type={'number'}
-                          inputProps={{ style: { fontSize: 20, width: 100 } }}
-                          variant="outlined"
-                        />
-                      </Box>
-                      <Box>
-                        <InputLabel>Preço unitário</InputLabel>
-                        <TextField
-                          disabled
-                          inputProps={{ style: { fontSize: 20, width: 100 } }}
-                          value={'3,00'}
-                          variant="outlined"
-                        />
-                      </Box>
-                    </Stack>
-                    <Box marginTop={14} sx={{ padding: 4 }}>
-                      <Stack direction="row" spacing={2}>
-                      <Button
-                          color={'error'}
-                          startIcon={<LocalAtmIcon />}
-                          size="large"
-                          variant="outlined"
-                        >
-                          cancelar (f5)
-                        </Button>
+          {isLoading ? (
+            ''
+          ) : (
+            <Box padding={2}>
+              <InputLabel>Nome ou código de barras</InputLabel>
+              <Autocomplete
+                disablePortal
+                value={values}
+                options={
+                  isLoading
+                    ? []
+                    : data?.map((product: IProduct, index: number) => {
+                        return { label: product.name, index };
+                      })
+                }
+                size={'medium'}
+                onChange={(event, value) => {
+                  setValues(value);
+                  handleSeletProduct(value?.index as number);
+                }}
+                sx={{ width: '100%' }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+
+              <Grid
+                container
+                rowSpacing={1}
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+              >
+                <Grid item xs={6}>
+                  <Paper
+                    sx={{ marginTop: 1, background: 'none', height: '97%' }}
+                  >
+                    <Box>
+                      <Stack
+                        marginTop={1}
+                        direction="row"
+                        padding={3}
+                        spacing={3}
+                      >
+                        <Box>
+                          <InputLabel>Quantidade</InputLabel>
+                          <TextField
+                            defaultValue={1}
+                            value={quantity}
+                            onChange={(e) =>
+                              setQuantity(e.target.value as unknown as number)
+                            }
+                            type={'number'}
+                            inputProps={{
+                              style: { fontSize: 20, width: 100 },
+                              min: 1,
+                              max: max,
+                            }}
+                            variant="outlined"
+                          />
+                        </Box>
+                        <Box>
+                          <InputLabel>Preço unitário</InputLabel>
+                          <TextField
+                            disabled
+                            inputProps={{ style: { fontSize: 20, width: 100 } }}
+                            value={price}
+                            variant="outlined"
+                          />
+                        </Box>
+                      </Stack>
+                      <Box
+                        sx={{
+                          padding: 6.5,
+                          justifyContent: 'center',
+                          marginTop: 9,
+                        }}
+                      >
                         <Button
+                          fullWidth
+                          sx={{ width: 400 }}
                           color={'warning'}
-                          startIcon={<LocalAtmIcon />}
+                          startIcon={<AddCircleIcon />}
+                          onClick={() => handleSeletAddProduct()}
                           size="large"
                           variant="contained"
                         >
-                          Adicionar (f1)
+                          Adicionar (f12)
                         </Button>
+                      </Box>
+                    </Box>
+                  </Paper>
+                </Grid>
+                <Grid item xs={6}>
+                  <Box sx={{ height: 350, width: '100%' }} marginTop={1}>
+                    <DataGrid
+                      className="table"
+                      rows={selected}
+                      loading={isLoading}
+                      columns={columns}
+                      pageSize={5}
+                      getRowId={(rows) => rows.id}
+                      rowsPerPageOptions={[5]}
+                      autoPageSize
+                      localeText={GRID_DEFAULT_LOCALE_TEXT}
+                    />
+                    <Box
+                      sx={{
+                        borderRadius: 1,
+                      }}
+                      marginBottom={1}
+                      marginTop={1}
+                      padding={0.5}
+                    >
+                      <Stack direction="row" spacing={6}>
+                        <Typography variant="h3" gutterBottom>
+                          Total:
+                        </Typography>
+                        <Typography variant="h3" gutterBottom>
+                          {(money / 100).toLocaleString('pt-br', {
+                            style: 'currency',
+                            currency: 'BRL',
+                          })}
+                        </Typography>
                       </Stack>
                     </Box>
-                  </Box>
-                </Paper>
-              </Grid>
-              <Grid item xs={6}>
-                <Box sx={{ height: 350, width: '100%' }} marginTop={1}>
-                  <DataGrid
-                    className="table"
-                    rows={{}}
-                    columns={columns}
-                    pageSize={5}
-                    getRowId={(rows) => rows.id}
-                    rowsPerPageOptions={[5]}
-                    autoPageSize
-                    localeText={GRID_DEFAULT_LOCALE_TEXT}
-                  />
-                  <Box
-                    sx={{
-                      borderRadius: 1,
-                    }}
-                    marginBottom={1}
-                    marginTop={1}
-                    padding={0.5}
-                  >
-                    <Stack direction="row" spacing={6}>
-                      <Typography variant="h3" gutterBottom>
-                        Total:
-                      </Typography>
-                      <Typography variant="h3" gutterBottom>
-                        R$ 42,25
-                      </Typography>
+
+                    <Stack spacing={2} direction="row">
+                      <Button
+                        sx={{ width: 300 }}
+                        disableElevation
+                        startIcon={<CloseIcon />}
+                        size="large"
+                        color={'error'}
+                        variant="contained"
+                        onClick={() => handleSeletCancel()}
+                      >
+                        Cancelar venda (f7)
+                      </Button>
+                      <Button
+                        disableElevation
+                        startIcon={<DoneIcon />}
+                        sx={{ width: 300 }}
+                        size="large"
+                        variant="contained"
+                        onClick={() => handleSubmit()}
+                      >
+                        Finalizar venda (f10)
+                      </Button>
                     </Stack>
                   </Box>
-
-                  <Stack spacing={2} direction="row">
-                    <Button
-                      sx={{ width: 300 }}
-                      disableElevation
-                      startIcon={<CloseIcon />}
-                      size="large"
-                      color={'error'}
-                      variant="contained"
-                    >
-                      Cancelar venda (f7)
-                    </Button>
-                    <Button
-                      disableElevation
-                      startIcon={<DoneIcon />}
-                      sx={{ width: 300 }}
-                      size="large"
-                      variant="contained"
-                    >
-                      Finalizar venda (f10)
-                    </Button>
-                  </Stack>
-                </Box>
+                </Grid>
               </Grid>
-            </Grid>
-          </Box>
+            </Box>
+          )}
         </Grid>
       </Grid>
     </>
   );
-}
+};
