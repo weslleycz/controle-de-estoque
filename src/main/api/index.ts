@@ -20,4 +20,3 @@ import { routes } from './controllers/routes';
   app.use('/api', routes);
 
   app.listen(3333);
-

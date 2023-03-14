@@ -8,7 +8,7 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, ipcMain, shell,Notification } from 'electron';
 import log from 'electron-log';
 import Store from 'electron-store';
 import { autoUpdater } from 'electron-updater';
@@ -60,6 +60,10 @@ ipcMain.on('window-exit', async (event) => {
 ipcMain.on('window-relaunch', async (event) => {
   mainWindow.setFullScreen(config.get('fullscreen'));
 });
+
+ipcMain.on('notification',async(event,title,body,icon)=>{
+  new Notification({ title, body,icon }).show()
+})
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');

@@ -24,9 +24,12 @@ const electronHandler = {
     exit() {
       ipcRenderer.send('window-exit');
     },
-    relaunch(){
+    relaunch() {
       ipcRenderer.send('window-relaunch');
-    }
+    },
+    notification(title:string,body:string,icon:string) {
+      ipcRenderer.send('notification',title,body,icon);
+    },
   },
   store: {
     get(key: string) {
