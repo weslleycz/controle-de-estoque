@@ -10,14 +10,22 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { ThemeModel } from 'renderer/store/theme.store';
 import logoDark from '../../../assets/logo_dark.svg';
 import './style.scss';
+import { Calculator } from '../Calculator';
+import { useState } from 'react';
 
 export const Menu = () => {
   const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const theme = useStoreState((state: ThemeModel) => state.theme) as string;
   useHotkeys('esc', () => window.electron.ipcRenderer.exit(), []);
   useHotkeys('f2', () => navigate('/'), []);
   useHotkeys('f3', () => navigate('/stock'), []);
   useHotkeys('f4', () => navigate('/config'), []);
+  useHotkeys('tab', () => handleOpen(), []);
 
   return (
     <>
@@ -51,6 +59,7 @@ export const Menu = () => {
             </ListItem>
           </NavLink>
 
+          <Calculator handleClose={handleClose} handleOpen={handleOpen} open={open} />
 
           <NavLink to="/stock">
             <ListItem component="div" disablePadding>
@@ -64,8 +73,7 @@ export const Menu = () => {
             </ListItem>
           </NavLink>
 
-          <NavLink to="/stock">
-            <ListItem component="div" disablePadding>
+            <ListItem onClick={()=>handleOpen()} component="div" disablePadding>
               <Button
                 color={theme === 'dark' ? 'inherit' : 'primary'}
                 size="large"
@@ -74,7 +82,6 @@ export const Menu = () => {
                 <strong>Calculadora (Tab)</strong>
               </Button>
             </ListItem>
-          </NavLink>
 
           <NavLink to="/config">
             <ListItem component="div" disablePadding>

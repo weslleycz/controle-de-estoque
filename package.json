@@ -123,6 +123,7 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.8.1",
     "react-toastify": "^9.1.1",
+    "simple-react-calculator": "^0.4.1",
     "styled-components": "^5.3.6",
     "use-indexeddb": "^2.0.2",
     "use-system-theme": "^0.1.1",
