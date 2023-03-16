@@ -1,25 +1,130 @@
-.css-9iwzto{
-  background-color: #06ac98;
-  &:hover{
-    background: #12bda9;
-}
-&:visited{
-    background:#06ac98;
-}
-}
-.css-h2okw{
- height: 40rem;
+@mixin primary-color {
+  background-image: linear-gradient(to right top, #00949b, #06ac98);
+  border-radius: 50%;
 }
 
-.css-1uzr0i {
-  background-color: #12bda9;
-  color: white;
-  width: 25%;
-  height: 16%;
-  font-size: 6vmin;
-  border: 3px solid black;
+@mixin theme-colors($light-theme: true) {
+  @if $light-theme {
+    .MuiBox-root{
+      margin-top: 2.5%;
+    }
+    div[style="font-size: 14vmin;"] {
+      background: rgba(255, 255, 255, 0.959);
+      backdrop-filter: blur(13.4px);
+      -webkit-backdrop-filter: blur(13.4px);
+      color: #3a3939;
+    }
+    div[style="font-size: 89.26px;"] {
+      background: rgba(255, 255, 255, 0.959);
+      backdrop-filter: blur(13.4px);
+      -webkit-backdrop-filter: blur(13.4px);
+      color: #3a3939;
+    }
+    div[style="font-size: 79.26px;"] {
+      background: rgba(255, 255, 255, 0.959);
+      backdrop-filter: blur(13.4px);
+      -webkit-backdrop-filter: blur(13.4px);
+      color: #3a3939;
+    }
+    div[style="font-size: 69.26px;"] {
+      background: rgba(255, 255, 255, 0.959);
+      backdrop-filter: blur(13.4px);
+      -webkit-backdrop-filter: blur(13.4px);
+      color: #3a3939;
+    }
+    button {
+      height: 6.7rem;
+      background: rgba(255, 255, 255, 0.993);
+      backdrop-filter: blur(18.6px);
+      -webkit-backdrop-filter: blur(18.6px);
+      border: 1px solid rgba(255, 255, 255, 0.705);
+      color: #3a3939;
+    }
+    button[value="="] {
+      @include primary-color;
+      color: #ffff;
+    }
+    button[value="AC"] {
+      color: #f54040;
+    }
+    button[value="C"] {
+      color: #f54040;
+    }
+    button[value="+/-"] {
+      color: #13dac2;
+    }
+    button[value="%"] {
+      color: #13dac2;
+    }
+    button[value="÷"] {
+      color: #13dac2;
+    }
+    button[value="x"] {
+      color: #13dac2;
+    }
+    button[value="-"] {
+      color: #13dac2;
+    }
+    button[value="+"] {
+      color: #13dac2;
+    }
+    span {
+      padding: 4%;
+    }
+  } @else {
+    div[style="font-size: 14vmin;"] {
+      background: rgba(27, 26, 26, 0.925);
+      backdrop-filter: blur(13.4px);
+      -webkit-backdrop-filter: blur(13.4px);
+      color: #ffff;
+    }
+    button {
+      height: 6.7rem;
+      background: rgba(27, 26, 26, 0.959);
+      backdrop-filter: blur(18.6px);
+      -webkit-backdrop-filter: blur(18.6px);
+      border: 1px solid rgba(255, 255, 255, 0.705);
+      border-color: rgba(27, 26, 26, 0.959);
+      color: #ffff;
+    }
+    button[value="="] {
+      @include primary-color;
+      color: #ffff;
+    }
+    button[value="AC"] {
+      color: #f54040;
+    }
+    button[value="C"] {
+      color: #f54040;
+    }
+    button[value="+/-"] {
+      color: #13dac2;
+    }
+    button[value="%"] {
+      color: #13dac2;
+    }
+    button[value="÷"] {
+      color: #13dac2;
+    }
+    button[value="x"] {
+      color: #13dac2;
+    }
+    button[value="-"] {
+      color: #13dac2;
+    }
+    button[value="+"] {
+      color: #13dac2;
+    }
+    span {
+      padding: 4%;
+    }
+  }
 }
 
-.css-1lqzgzw{
-  padding: 4%;
+.container-modal-light {
+  @include theme-colors($light-theme: true);
+}
+
+.container-modal-dark {
+  @include theme-colors($light-theme: false);
 }

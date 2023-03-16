@@ -137,9 +137,9 @@ export const Stock = () => {
           <Header title="Estoque" />
           <Container sx={{ height: 450, width: '100%', marginTop: 2 }}>
             <Box marginBottom={2}>
-              <Stack direction="row" spacing={80}>
+              <Stack direction="row" spacing={2}>
                 <TextField
-                  sx={{ width: 300 }}
+                  sx={{ width: 950 }}
                   label="Nome ou código de barras"
                   onChange={(e) => handleFilter(e.target.value)}
                   variant="outlined"

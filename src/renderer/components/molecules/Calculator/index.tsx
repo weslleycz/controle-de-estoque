@@ -1,13 +1,15 @@
-import { Paper } from '@mui/material';
+import { Box } from '@mui/material';
 import Modal from '@mui/material/Modal';
-import { ReactCalculator } from 'simple-react-calculator';
+import { useStoreState } from 'easy-peasy';
 import { useHotkeys } from 'react-hotkeys-hook';
+import { ThemeModel } from 'renderer/store/theme.store';
+import { ReactCalculator } from 'simple-react-calculator';
 import './style.scss';
 
 const style = {
   position: 'absolute' as 'absolute',
   left: '50%',
-  top: '6%',
+  top: '2%',
   transform: 'translate(-50%, -50%)',
   width: 400,
   height: 20,
@@ -21,6 +23,7 @@ type Props = {
 };
 
 export const Calculator = ({ open, handleClose, handleOpen }: Props) => {
+  const theme = useStoreState((state: ThemeModel) => state.theme) as string;
   useHotkeys('tab', () => handleClose(), []);
   return (
     <>
@@ -30,9 +33,23 @@ export const Calculator = ({ open, handleClose, handleOpen }: Props) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Paper sx={style}>
-          <ReactCalculator />
-        </Paper>
+        <Box
+          className={
+            theme === 'dark' ? 'container-modal-dark' : 'container-modal-light'
+          }
+          sx={style}
+        >
+          <Box
+            height={690}
+            bgcolor={
+              theme === 'dark'
+                ? 'rgba(27, 26, 26, 0.959)'
+                : 'rgba(255, 255, 255, 0.993)'
+            }
+          >
+            <ReactCalculator />
+          </Box>
+        </Box>
       </Modal>
     </>
   );

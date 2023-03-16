@@ -21,11 +21,25 @@ import { useQuery } from 'react-query';
 import { notifyError } from 'renderer/components/atoms/Notify';
 import { Header } from 'renderer/components/molecules/Header';
 import { Menu } from 'renderer/components/molecules/Menu';
+import { ModalCancel } from 'renderer/components/molecules/ModalCancel';
+import { ModalConfirm } from 'renderer/components/molecules/ModalConfirm';
 import { api } from 'renderer/services/apí';
 import { IProduct } from 'renderer/types/IProduct';
 
-export const Home = () => {
-  const { isLoading, error, data } = useQuery('products', async () => {
+export const Caixa = () => {
+  const [openCancel, setOpenCancel] = useState(false);
+  const handleOpenCancel = () => {
+    if (selected.length != 0) {
+    setOpenCancel(true);
+    }
+  };
+  const handleCloseCancel = () => setOpenCancel(false);
+
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const handleOpenConfirm = () => setOpenConfirm(true);
+  const handleCloseConfirm = () => setOpenConfirm(false);
+
+  const { isLoading, error, data, refetch } = useQuery('products', async () => {
     const product = (await (
       await api.get('/products')
     ).data.data) as IProduct[];
@@ -141,9 +155,10 @@ export const Home = () => {
     setQuantity(1);
     setProductIndex(null);
     setMoney(0);
+    handleCloseCancel();
   };
 
-  const handleSubmit = async () => {
+  const handleConfirm = async () => {
     if (selected.length != 0) {
       try {
         await api.post('/sales', {
@@ -177,7 +192,9 @@ export const Home = () => {
                   isLoading
                     ? []
                     : data?.map((product: IProduct, index: number) => {
-                        return { label: product.name, index };
+                        if (product.quantity != 0) {
+                          return { label: product.name, index };
+                        }
                       })
                 }
                 size={'medium'}
@@ -296,7 +313,7 @@ export const Home = () => {
                         size="large"
                         color={'error'}
                         variant="contained"
-                        onClick={() => handleSeletCancel()}
+                        onClick={() => handleOpenCancel()}
                       >
                         Cancelar venda (f7)
                       </Button>
@@ -306,7 +323,7 @@ export const Home = () => {
                         sx={{ width: 300 }}
                         size="large"
                         variant="contained"
-                        onClick={() => handleSubmit()}
+                        onClick={() => handleConfirm()}
                       >
                         Finalizar venda (f10)
                       </Button>
@@ -318,6 +335,25 @@ export const Home = () => {
           )}
         </Grid>
       </Grid>
+      <ModalCancel
+        handleClose={handleCloseCancel}
+        btn="Sim"
+        btnClose={'Não'}
+        handleMethod={() => handleSeletCancel()}
+        open={openCancel}
+        text={'Tem certeza que gostaria de cancelar venda?'}
+        title={'Cancelamento de Venda'}
+      />
+
+      <ModalConfirm
+        handleClose={handleCloseConfirm}
+        btn="Confirmar"
+        btnClose={'Canselar'}
+        handleMethod={() => handleConfirm()}
+        open={openConfirm}
+        text={'Gostaria de imprimir nota?'}
+        title={'Imprimir nota'}
+      />
     </>
   );
 };

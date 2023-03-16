@@ -1,17 +1,16 @@
+import CalculateIcon from '@mui/icons-material/Calculate';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import CalculateIcon from '@mui/icons-material/Calculate';
 import { Box, Button, List, ListItem } from '@mui/material';
 import { useStoreState } from 'easy-peasy';
+import { useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ThemeModel } from 'renderer/store/theme.store';
 import logoDark from '../../../assets/logo_dark.svg';
-import './style.scss';
 import { Calculator } from '../Calculator';
-import { useState } from 'react';
+import './style.scss';
 
 export const Menu = () => {
   const navigate = useNavigate();
@@ -22,10 +21,9 @@ export const Menu = () => {
 
   const theme = useStoreState((state: ThemeModel) => state.theme) as string;
   useHotkeys('esc', () => window.electron.ipcRenderer.exit(), []);
-  useHotkeys('f2', () => navigate('/'), []);
-  useHotkeys('f3', () => navigate('/stock'), []);
-  useHotkeys('f4', () => navigate('/config'), []);
-  useHotkeys('tab', () => handleOpen(), []);
+  useHotkeys('f1', () => navigate('/'), []);
+  useHotkeys('f2', () => handleOpen(), []);
+  useHotkeys('f3', () => navigate('/config'), []);
 
   return (
     <>
@@ -47,7 +45,8 @@ export const Menu = () => {
               ></img>
             )}
           </ListItem>
-          <NavLink to="/">
+
+          {/* <NavLink to="/">
             <ListItem component="div" disablePadding>
               <Button
                 color={theme === 'dark' ? 'inherit' : 'primary'}
@@ -57,31 +56,35 @@ export const Menu = () => {
                 <strong>Caixa (F2)</strong>
               </Button>
             </ListItem>
-          </NavLink>
+          </NavLink> */}
 
-          <Calculator handleClose={handleClose} handleOpen={handleOpen} open={open} />
+          <Calculator
+            handleClose={handleClose}
+            handleOpen={handleOpen}
+            open={open}
+          />
 
-          <NavLink to="/stock">
+          <NavLink to="/">
             <ListItem component="div" disablePadding>
               <Button
                 color={theme === 'dark' ? 'inherit' : 'primary'}
                 size="large"
                 startIcon={<Inventory2Icon />}
               >
-                <strong>Estoque (F3)</strong>
+                <strong>Estoque (F1)</strong>
               </Button>
             </ListItem>
           </NavLink>
 
-            <ListItem onClick={()=>handleOpen()} component="div" disablePadding>
-              <Button
-                color={theme === 'dark' ? 'inherit' : 'primary'}
-                size="large"
-                startIcon={<CalculateIcon />}
-              >
-                <strong>Calculadora (Tab)</strong>
-              </Button>
-            </ListItem>
+          <ListItem onClick={() => handleOpen()} component="div" disablePadding>
+            <Button
+              color={theme === 'dark' ? 'inherit' : 'primary'}
+              size="large"
+              startIcon={<CalculateIcon />}
+            >
+              <strong>Calculadora (F2)</strong>
+            </Button>
+          </ListItem>
 
           <NavLink to="/config">
             <ListItem component="div" disablePadding>
@@ -95,7 +98,7 @@ export const Menu = () => {
             </ListItem>
           </NavLink>
 
-          <ListItem sx={{ marginTop: 33 }} component="div" disablePadding>
+          <ListItem sx={{ marginTop: 40 }} component="div" disablePadding>
             <Button
               color={'error'}
               size="large"
