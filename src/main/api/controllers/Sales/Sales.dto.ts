@@ -8,7 +8,11 @@ import {
 import { Type } from 'class-transformer';
 
 export type IProduct={
-  price: number
+  price: number;
+  id:string;
+  code_bar:string;
+  name:string;
+  quantity:number;
 }
 
 export class Product {
