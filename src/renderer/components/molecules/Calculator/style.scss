@@ -1,6 +1,5 @@
 @mixin primary-color {
   background-image: linear-gradient(to right top, #00949b, #06ac98);
-  border-radius: 50%;
 }
 
 @mixin theme-colors($light-theme: true) {

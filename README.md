@@ -18,5 +18,5 @@ Um programa desktop simples de controle de estoque gratuito é ideal para empres
 
 
 ### 💾 Download 
-- [Windows](#)
-- [Linux](#)
+- [Windows](https://drive.google.com/file/d/11X2nALKjl7xjWZuiR4jZoHya6YgD0jsl/view?usp=sharing)
+- [Linux](https://drive.google.com/file/d/1iVz0KHL0r8cggW32ZcnRLYF_IC9dAhe_/view)
